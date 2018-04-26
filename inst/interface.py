@@ -3,15 +3,24 @@ from zipline import run_algorithm
 
 interface_is_available = True
 
-def initialize(context):
-    r.fly_initialize(context)
-    return
 
-def handle_data(context, data):
-    r.fly_handle_data(context, data)
-    return
+# def initialize(context):
+#     r.fly_initialize(context)
+#     return
+#
+# def handle_data(context, data):
+#     r.fly_handle_data(context, data)
+#     return
 
-def py_run(start, end, capital_base, bundle):
+def py_run(fly_initialize, fly_handle_data, start, end, capital_base, bundle):
+
+    def initialize(context):
+      fly_initialize(context)
+      return
+
+    def handle_data(context, data):
+      fly_handle_data(context, data)
+      return
 
     performance = run_algorithm(
       start = start,
