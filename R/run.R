@@ -1,6 +1,21 @@
 #' @export
-fly_run_algorithm <- function(initialize, handle_data, start = NULL, end = NULL,
-                              capital_base = 10000, bundle = "quandl",
+fly_run_algorithm <- function(initialize,
+                              handle_data,
+                              start = NULL,
+                              end = NULL,
+                              capital_base = 10000,
+                              before_trading_start = NULL,
+                              analyze = NULL,
+                              data_frequency = 'daily',
+                              data = NULL,
+                              bundle = "quandl",
+                              bundle_timestamp = NULL,
+                              trading_calendar = NULL,
+                              metrics_set = 'default',
+                              default_extension = TRUE,
+                              #extensions=(),
+                              strict_extensions = TRUE,
+                              #environ=os.environ,
                               recursive_conversion = TRUE) {
 
   # Function validation
@@ -23,7 +38,18 @@ fly_run_algorithm <- function(initialize, handle_data, start = NULL, end = NULL,
     start = start,
     end = end,
     capital_base = capital_base,
-    bundle = bundle
+    before_trading_start = before_trading_start,
+    analyze = analyze,
+    data_frequency = data_frequency,
+    data = data,
+    bundle = bundle,
+    bundle_timestamp = bundle_timestamp,
+    trading_calendar = trading_calendar,
+    metrics_set = metrics_set,
+    default_extension = default_extension,
+    #extensions,
+    strict_extensions = strict_extensions #,
+    #environ
   )
 
   if(recursive_conversion) {
