@@ -1,3 +1,37 @@
+# ------------------------------------------------------------------------------
+# Reexports
+
+#' Convert an R object to Python
+#'
+#' This function is re-exported from the reticulate package.
+#' See [reticulate::r_to_py()] for more details.
+#'
+#' @name r_to_py
+#' @keywords internal
+#' @seealso [reticulate::r_to_py()]
+#' @export
+#' @importFrom reticulate r_to_py
+#'
+NULL
+
+#' Convert a Python object to R
+#'
+#' This function is re-exported from the reticulate package.
+#' See [reticulate::py_to_r()] for more details.
+#'
+#' @name py_to_r
+#' @keywords internal
+#' @seealso [reticulate::py_to_r()]
+#' @export
+#' @importFrom reticulate py_to_r
+#'
+NULL
+
+#' @importFrom rlang !!!
+
+# ------------------------------------------------------------------------------
+# Utils
+
 as_integer <- function(x) {
   if(is.numeric(x)) {
     as.integer(x)
@@ -6,55 +40,17 @@ as_integer <- function(x) {
   }
 }
 
-interface_is_available <- function() {
+ensure_zipline_py_interface_is_available <- function() {
+  if(!zipline_interface_is_available()) {
+    reticulate::source_python("inst/interface.py")
+  }
+}
+
+zipline_interface_is_available <- function() {
   tryCatch({
     main$interface_is_available
   },
   error = function(e) {
     FALSE
   })
-}
-
-ensure_r_is_exported <- function() {
-  is_exported <- tryCatch(
-    expr  = { main$r; TRUE },
-    error = function(e) { FALSE}
-  )
-
-  if(!is_exported) {
-    export_r()
-  }
-}
-
-# ------------------------------------------------------------------------------
-# Hack to push r to the python side
-
-# yoink <- function(package, symbol) {
-#   do.call(":::", list(package, symbol))
-# }
-
-as_r_value <- function (x) {
-  if (inherits(x, "python.builtin.object"))
-    reticulate::py_to_r(x)
-  else x
-}
-
-export_r <- function(envir = getOption("reticulate.engine.environment")) {
-  reticulate::py_run_string("class R(object): pass")
-  main <- reticulate::import_main(convert = FALSE)
-  R <- main$R
-  if (is.null(envir)) {
-    envir <- globalenv()
-  }
-  getter <- function(self, code) {
-    reticulate::r_to_py(eval(parse(text = as_r_value(code)), envir = envir))
-  }
-  setter <- function(self, name, value) {
-    envir[[as_r_value(name)]] <<- as_r_value(value)
-  }
-  reticulate::py_set_attr(R, "__getattr__", getter)
-  reticulate::py_set_attr(R, "__setattr__", setter)
-  reticulate::py_set_attr(R, "__getitem__", getter)
-  reticulate::py_set_attr(R, "__setitem__", setter)
-  reticulate::py_run_string("r = R()")
 }
