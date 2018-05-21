@@ -4,19 +4,9 @@ fly_run_algorithm <- function(initialize, handle_data, start = NULL, end = NULL,
                               recursive_conversion = TRUE) {
 
   # Function validation
-  if(!is.function(initialize) && !is.function(handle_data)) {
-    stop("Both `initialize` and `handle_data` must be functions.", call. = FALSE)
-  }
+  validate_function_structure(initialize, handle_data)
 
-  # be more flexible here! allow for kwargs to initialize and handle_data
-  if(all(rlang::fn_fmls_names(initialize) != "context")) {
-    stop("The argument to the `initialize` function must be named `context`.")
-  }
-
-  if(all(rlang::fn_fmls_names(handle_data) != c("context", "data"))) {
-    stop("The arguments to the `handle_data` function must be named `context` and `data`.", call. = FALSE)
-  }
-
+  # Default dates
   if(is.null(start)) start <- Sys.Date() - 252
   if(is.null(end)) end <- Sys.Date()
 
@@ -41,4 +31,51 @@ fly_run_algorithm <- function(initialize, handle_data, start = NULL, end = NULL,
   }
 
   performance
+}
+
+validate_function_structure <- function(initialize, handle_data) {
+
+  if(!is.function(initialize) && !is.function(handle_data)) {
+    stop("Both `initialize` and `handle_data` must be functions.", call. = FALSE)
+  }
+
+  validate_initialize_arguments(initialize)
+  validate_handle_data_arguments(handle_data)
+}
+
+
+validate_initialize_arguments <- function(.f) {
+  arg_names <- rlang::fn_fmls_names(.f)
+
+  # In this case, assume the user has used purrr::partial() to add flexible arguments
+  if(length(arg_names) == 1L && arg_names == "...") {
+    return()
+  }
+
+  # Otherwise, enforce structure
+  bad_args <- FALSE
+  if(length(arg_names) != 1L) bad_args <- TRUE
+  if(arg_names != "context") bad_args <- TRUE
+
+  if(bad_args) {
+    stop("There must be 1 argument to the `initialize()` function, and it must be named `context`.", call. = FALSE)
+  }
+}
+
+validate_handle_data_arguments <- function(.f) {
+  arg_names <- rlang::fn_fmls_names(.f)
+
+  # In this case, assume the user has used purrr::partial() to add flexible arguments
+  if(length(arg_names) == 1L && arg_names == "...") {
+    return()
+  }
+
+  # Otherwise, enforce structure
+  bad_args <- FALSE
+  if(length(arg_names) != 2L) bad_args <- TRUE
+  if(all(arg_names != c("context", "data"))) bad_args <- TRUE
+
+  if(bad_args) {
+    stop("There must be 2 arguments to the `handle_data()` function and they must be named `context` and `data`, in that order.", call. = FALSE)
+  }
 }
