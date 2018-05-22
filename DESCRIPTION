@@ -1,15 +1,21 @@
 Package: flyingfox
 Type: Package
-Title: What the Package Does (Title Case)
+Title: An Interface to the Quantopian Zipline Financial Backtester
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+    person("Davis", "Vaughan", email = "dvaughan@business-science.io", role = c("aut", "cre")),
+    person("Matt", "Dancho", email = "mdancho@business-science.io", role = c("aut"))
+  )
+Maintainer: Davis Vaughan <dvaughan@business-science.io>
+Description: The 'flyingfox' package is a 'reticulate' interface to the 
+    'zipline' Python module from Quantopian. 'zipline' is an event driven
+    financial backtester allowing for commission, slippage, and other flexible
+    options.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
+  reticulate (>= 1.7),
   rlang (>= 0.2.0),
   tibble (>= 1.4.2)
 RoxygenNote: 6.0.1
