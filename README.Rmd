@@ -53,7 +53,10 @@ as recommended by `reticulate`.
 Next, you'll need data to run the backtest on. The easiest way
 to do this is to:
 
-1) Create a free account on [Quandl](https://www.quandl.com/) and find your API Key in Account Settings. 2) Add the API key as the R environment variable, `QUANDL_API_KEY` (access your `.Renviron` variable with `usethis::edit_r_environ()`).
+1) Create a free account on [Quandl](https://www.quandl.com/) and find your API Key in Account Settings.
+
+2) Add the API key as the R environment variable, `QUANDL_API_KEY` (access your `.Renviron` file with `usethis::edit_r_environ()`).
+
 3) "Ingest" the Quandl data with `flyingfox::fly_ingest()`.
 
 ```{r, eval=FALSE}
