@@ -42,7 +42,8 @@ as_integer <- function(x) {
 
 ensure_zipline_py_interface_is_available <- function() {
   if(!zipline_interface_is_available()) {
-    reticulate::source_python("inst/interface.py")
+    py_path <- system.file("python", "interface.py", package = "flyingfox")
+    reticulate::source_python(py_path)
   }
 }
 
