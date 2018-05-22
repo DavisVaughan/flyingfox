@@ -4,7 +4,7 @@ install_zipline <- function(envname = "r-reticulate", method = c("auto", "virtua
 }
 
 #' @export
-fly_ingest <- function(name = "quandl", timestamp = NULL, show_progress = FALSE) {
+fly_ingest <- function(name = "quandl", timestamp = NULL, show_progress = TRUE) {
   # I think there are still arguments to pass here
 
   if(name == "quandl") {
