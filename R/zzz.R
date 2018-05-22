@@ -12,6 +12,7 @@ zipline  <- NULL
 
   zipline <<- reticulate::import(
     module = "zipline",
+    delay_load = TRUE,
     convert = TRUE
   )
 }
