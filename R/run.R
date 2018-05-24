@@ -56,6 +56,17 @@ fly_run_algorithm <- function(initialize,
     performance <- py_to_r_performance_tibble(performance)
   }
 
+  # Currently reticulate does not convert date columns to POSIXct
+  tryCatch(
+    expr = {
+      performance$date <- as.POSIXct(performance$date, tz = "UTC")
+      performance <- tibbletime::as_tbl_time(performance, index = date)
+    },
+    error = function(e) {
+      message("Could not convert the date column to POSIXct. A tibble will be returned.\n")
+      warning(e)
+    })
+
   performance
 }
 
