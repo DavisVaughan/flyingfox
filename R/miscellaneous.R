@@ -7,6 +7,7 @@ fly_record <- function(...) {
 
 #' @export
 fly_fetch_csv <- function(
+  url,
   pre_func = NULL,
   post_func = NULL,
   date_column = "date",
@@ -19,6 +20,7 @@ fly_fetch_csv <- function(
   ...) {
 
   zipline$api$fetch_csv(
+    url = url,
     pre_func = pre_func,
     post_func = post_func,
     date_column = date_column,
