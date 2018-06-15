@@ -42,5 +42,5 @@ fly_data_is_stale <- function(data, assets) {
 #' @rdname zipline-data
 #' @export
 fly_data_can_trade <- function(data, assets) {
-  data$is_stale(assets = assets)
+  data$can_trade(assets = assets)
 }
